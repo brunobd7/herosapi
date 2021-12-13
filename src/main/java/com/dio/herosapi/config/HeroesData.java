@@ -1,11 +1,18 @@
 package com.dio.herosapi.config;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.Item;
 import com.dio.herosapi.constants.HeroesConstant;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType; //attributes type
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput; //storage
@@ -14,40 +21,29 @@ import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;  // attributes names
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 
 import java.util.Arrays;
 
-@Configuration
-@EnableDynamoDBRepositories
-public class HeroesTable {
+public class HeroesData {
 
     public static void main(String[] args) {
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(HeroesConstant.HEROES_ENDPOINT_DYNAMO, HeroesConstant.REGION_DYNAMO))
+                .withEndpointConfiguration( new AwsClientBuilder.EndpointConfiguration(HeroesConstant.HEROES_ENDPOINT_DYNAMO,HeroesConstant.REGION_DYNAMO))
                 .build();
 
-        DynamoDB dynamoDB = new DynamoDB(client);
 
-        String tableName = "Heroes_Table";
+        DynamoDB dynamoDb = new DynamoDB(client);
 
-        try{
+        Table table = dynamoDb.getTable("Heroes_Table");
 
-            Table table = dynamoDB.createTable(tableName,
-                    Arrays.asList( new KeySchemaElement("id",KeyType.HASH)),
-                    Arrays.asList(new AttributeDefinition("id",ScalarAttributeType.S)),
-                    new ProvisionedThroughput(5L,5l));
+        Item hero = new Item().withPrimaryKey("id",1)
+                .withString("name", "Spider man")
+                .withString("universe", "Marvel")
+                .withNumber("movies",3);
 
-            table.waitForActive();
-
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-
-
+        PutItemOutcome putItemOutcome = table.putItem(hero);
 
     }
-
 }

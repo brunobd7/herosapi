@@ -41,7 +41,7 @@ public class HeroesData {
         Item hero = new Item().withPrimaryKey("id",1)
                 .withString("name", "Spider man")
                 .withString("universe", "Marvel")
-                .withNumber("movies",3);
+                .withNumber("films",8);
 
         PutItemOutcome putItemOutcome = table.putItem(hero);
 

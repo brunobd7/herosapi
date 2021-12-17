@@ -38,7 +38,7 @@ public class HeroesData {
 
         Table table = dynamoDb.getTable("Heroes_Table");
 
-        Item hero = new Item().withPrimaryKey("id",1)
+        Item hero = new Item().withPrimaryKey("id","1")
                 .withString("name", "Spider man")
                 .withString("universe", "Marvel")
                 .withNumber("films",8);

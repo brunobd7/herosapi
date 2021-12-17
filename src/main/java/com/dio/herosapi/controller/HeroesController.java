@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @Slf4j
-//@RequestMapping("/heroes")
+@RequestMapping("/heroes")
 public class HeroesController {
 
     //USING OO CONSTRUCTOR

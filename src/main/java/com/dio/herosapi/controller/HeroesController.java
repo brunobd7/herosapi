@@ -31,8 +31,8 @@ public class HeroesController {
     //USING DI and IoC
     @Autowired
     HeroesService heroesService;
-    @Autowired
-    HeroesRepository heroesRepository;
+//    @Autowired
+//    HeroesRepository heroesRepository;
 
     private static final Logger log = LoggerFactory.getLogger(HeroesController.class);
 
